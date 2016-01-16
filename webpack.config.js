@@ -5,7 +5,7 @@ module.exports = {
     context: __dirname,
     entry: {
         'dist/bundle': path.resolve(__dirname, './src/index.js'),
-        'test/index': path.resolve(__dirname, './test/smoke.js'),
+        'test/bundle': path.resolve(__dirname, './test/index.js'),
     },
     output: {
         path: path.resolve(__dirname, './'),
