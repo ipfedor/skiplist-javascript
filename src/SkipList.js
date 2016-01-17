@@ -9,13 +9,14 @@ Object.defineProperty(Nil, 'next', {
 });
 
 export default class SkipList {
-    p = 0.5;
-    maxLevel = 16;
     levels = 1;
-    head = new SkipListNode(0, null, this.maxLevel);
     tail = Nil;
 
-    constructor() {
+    constructor({ headKey=0, p=0.5, maxLevel=16 }) {
+        this.p = p;
+        this.maxLevel = maxLevel;
+        this.head = new SkipListNode(headKey, null, this.maxLevel);
+
         for (let level = 0; level < this.levels; level++) {
             this.head.next[level] = this.tail;
         }
@@ -28,7 +29,7 @@ export default class SkipList {
                 node = node.next[level];
             }
             if (node.next[level].key === key) {
-                return { key: key, value: node.next[level].value };
+                return node.next[level];
             }
         }
     }
@@ -88,10 +89,20 @@ export default class SkipList {
         }
     }
 
+    before(key) {
+        let node = this.head;
+        for (let level = this.levels - 1; level > -1; level--) {
+            while (node.next[level].key < key) {
+                node = node.next[level];
+            }
+        }
+        return node;
+    }
+
     forEach(fn) {
         let node = this.head.next[0];
         while (node != Nil) {
-            fn(node.value, node.key);
+            fn(node);
             node = node.next[0];
         }
     }

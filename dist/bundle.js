@@ -90,14 +90,22 @@
 	});
 	
 	var SkipList = function () {
-	    function SkipList() {
+	    function SkipList(_ref) {
+	        var _ref$headKey = _ref.headKey;
+	        var headKey = _ref$headKey === undefined ? 0 : _ref$headKey;
+	        var _ref$p = _ref.p;
+	        var p = _ref$p === undefined ? 0.5 : _ref$p;
+	        var _ref$maxLevel = _ref.maxLevel;
+	        var maxLevel = _ref$maxLevel === undefined ? 16 : _ref$maxLevel;
+	
 	        _classCallCheck(this, SkipList);
 	
-	        this.p = 0.5;
-	        this.maxLevel = 16;
 	        this.levels = 1;
-	        this.head = new _SkipListNode2.default(0, null, this.maxLevel);
 	        this.tail = Nil;
+	
+	        this.p = p;
+	        this.maxLevel = maxLevel;
+	        this.head = new _SkipListNode2.default(headKey, null, this.maxLevel);
 	
 	        for (var level = 0; level < this.levels; level++) {
 	            this.head.next[level] = this.tail;
@@ -113,7 +121,7 @@
 	                    node = node.next[level];
 	                }
 	                if (node.next[level].key === key) {
-	                    return { key: key, value: node.next[level].value };
+	                    return node.next[level];
 	                }
 	            }
 	        }
@@ -176,11 +184,22 @@
 	            }
 	        }
 	    }, {
+	        key: 'before',
+	        value: function before(key) {
+	            var node = this.head;
+	            for (var level = this.levels - 1; level > -1; level--) {
+	                while (node.next[level].key < key) {
+	                    node = node.next[level];
+	                }
+	            }
+	            return node;
+	        }
+	    }, {
 	        key: 'forEach',
 	        value: function forEach(fn) {
 	            var node = this.head.next[0];
 	            while (node != Nil) {
-	                fn(node.value, node.key);
+	                fn(node);
 	                node = node.next[0];
 	            }
 	        }

@@ -1,4 +1,3 @@
-import 'source-map-support/register';
 import { expect } from 'chai';
 
 import SkipList from '../src/SkipList';
@@ -28,5 +27,10 @@ expect(skippy.get(0).value).to.equal('bar');
 
 skippy.unset(0);
 expect(skippy.get(0)).to.equal(void 0);
+
+expect(skippy.before(2)).to.equal('oh');
+expect(skippy.before(19)).to.equal('hello');
+expect(skippy.before(1)).to.equal(void 0);
+expect(skippy.before(0)).to.equal(void 0);
 
 console.log(skippy.map((val, key) => val));

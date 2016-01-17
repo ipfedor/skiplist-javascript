@@ -48,6 +48,8 @@
 
 	__webpack_require__(3);
 
+	__webpack_require__(21);
+
 /***/ },
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
@@ -79,14 +81,22 @@
 	});
 	
 	var SkipList = function () {
-	    function SkipList() {
+	    function SkipList(_ref) {
+	        var _ref$headKey = _ref.headKey;
+	        var headKey = _ref$headKey === undefined ? 0 : _ref$headKey;
+	        var _ref$p = _ref.p;
+	        var p = _ref$p === undefined ? 0.5 : _ref$p;
+	        var _ref$maxLevel = _ref.maxLevel;
+	        var maxLevel = _ref$maxLevel === undefined ? 16 : _ref$maxLevel;
+	
 	        _classCallCheck(this, SkipList);
 	
-	        this.p = 0.5;
-	        this.maxLevel = 16;
 	        this.levels = 1;
-	        this.head = new _SkipListNode2.default(0, null, this.maxLevel);
 	        this.tail = Nil;
+	
+	        this.p = p;
+	        this.maxLevel = maxLevel;
+	        this.head = new _SkipListNode2.default(headKey, null, this.maxLevel);
 	
 	        for (var level = 0; level < this.levels; level++) {
 	            this.head.next[level] = this.tail;
@@ -102,7 +112,7 @@
 	                    node = node.next[level];
 	                }
 	                if (node.next[level].key === key) {
-	                    return { key: key, value: node.next[level].value };
+	                    return node.next[level];
 	                }
 	            }
 	        }
@@ -165,11 +175,22 @@
 	            }
 	        }
 	    }, {
+	        key: 'before',
+	        value: function before(key) {
+	            var node = this.head;
+	            for (var level = this.levels - 1; level > -1; level--) {
+	                while (node.next[level].key < key) {
+	                    node = node.next[level];
+	                }
+	            }
+	            return node;
+	        }
+	    }, {
 	        key: 'forEach',
 	        value: function forEach(fn) {
 	            var node = this.head.next[0];
 	            while (node != Nil) {
-	                fn(node.value, node.key);
+	                fn(node);
 	                node = node.next[0];
 	            }
 	        }
@@ -231,62 +252,16 @@
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-	
-	__webpack_require__(4);
-	
-	var _chai = __webpack_require__(22);
-	
-	var _SkipList = __webpack_require__(1);
-	
-	var _SkipList2 = _interopRequireDefault(_SkipList);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var skippy = new _SkipList2.default();
-	
-	skippy.set(4, 'hello');
-	skippy.set(1, 'oh');
-	skippy.set(19, 'world');
-	skippy.set(2, 'hi');
-	skippy.set(2, 'lala');
-	skippy.unset(2);
-	skippy.set(2, 'hi');
-	
-	(0, _chai.expect)(skippy.get(4).value).to.equal('hello');
-	(0, _chai.expect)(skippy.has(19)).to.equal(true);
-	(0, _chai.expect)(skippy.has(5)).to.equal(false);
-	
-	skippy.set(5, 'boo');
-	(0, _chai.expect)(skippy.has(5)).to.equal(true);
-	
-	skippy.unset(5);
-	(0, _chai.expect)(skippy.has(5)).to.equal(false);
-	
-	skippy.set(0, 'bar');
-	(0, _chai.expect)(skippy.get(0).value).to.equal('bar');
-	
-	skippy.unset(0);
-	(0, _chai.expect)(skippy.get(0)).to.equal(void 0);
-	
-	console.log(skippy.map(function (val, key) {
-	  return val;
-	}));
+	__webpack_require__(4).install();
+
 
 /***/ },
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(5).install();
-
-
-/***/ },
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process, Buffer) {var SourceMapConsumer = __webpack_require__(11).SourceMapConsumer;
-	var path = __webpack_require__(20);
-	var fs = __webpack_require__(21);
+	/* WEBPACK VAR INJECTION */(function(process, Buffer) {var SourceMapConsumer = __webpack_require__(10).SourceMapConsumer;
+	var path = __webpack_require__(19);
+	var fs = __webpack_require__(20);
 	
 	// Only install once if called multiple times
 	var errorFormatterInstalled = false;
@@ -767,10 +742,10 @@
 	  }
 	};
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(7).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(6).Buffer))
 
 /***/ },
-/* 6 */
+/* 5 */
 /***/ function(module, exports) {
 
 	// shim for using process in browser
@@ -867,7 +842,7 @@
 
 
 /***/ },
-/* 7 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer, global) {/*!
@@ -880,9 +855,9 @@
 	
 	'use strict'
 	
-	var base64 = __webpack_require__(8)
-	var ieee754 = __webpack_require__(9)
-	var isArray = __webpack_require__(10)
+	var base64 = __webpack_require__(7)
+	var ieee754 = __webpack_require__(8)
+	var isArray = __webpack_require__(9)
 	
 	exports.Buffer = Buffer
 	exports.SlowBuffer = SlowBuffer
@@ -2419,10 +2394,10 @@
 	  return i
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7).Buffer, (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6).Buffer, (function() { return this; }())))
 
 /***/ },
-/* 8 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
@@ -2552,7 +2527,7 @@
 
 
 /***/ },
-/* 9 */
+/* 8 */
 /***/ function(module, exports) {
 
 	exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -2642,7 +2617,7 @@
 
 
 /***/ },
-/* 10 */
+/* 9 */
 /***/ function(module, exports) {
 
 	var toString = {}.toString;
@@ -2653,7 +2628,7 @@
 
 
 /***/ },
-/* 11 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -2661,13 +2636,13 @@
 	 * Licensed under the New BSD license. See LICENSE.txt or:
 	 * http://opensource.org/licenses/BSD-3-Clause
 	 */
-	exports.SourceMapGenerator = __webpack_require__(12).SourceMapGenerator;
-	exports.SourceMapConsumer = __webpack_require__(17).SourceMapConsumer;
-	exports.SourceNode = __webpack_require__(19).SourceNode;
+	exports.SourceMapGenerator = __webpack_require__(11).SourceMapGenerator;
+	exports.SourceMapConsumer = __webpack_require__(16).SourceMapConsumer;
+	exports.SourceNode = __webpack_require__(18).SourceNode;
 
 
 /***/ },
-/* 12 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* -*- Mode: js; js-indent-level: 2; -*- */
@@ -2681,9 +2656,9 @@
 	}
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, module) {
 	
-	  var base64VLQ = __webpack_require__(13);
-	  var util = __webpack_require__(15);
-	  var ArraySet = __webpack_require__(16).ArraySet;
+	  var base64VLQ = __webpack_require__(12);
+	  var util = __webpack_require__(14);
+	  var ArraySet = __webpack_require__(15).ArraySet;
 	
 	  /**
 	   * An instance of the SourceMapGenerator represents a source map which is
@@ -3053,7 +3028,7 @@
 
 
 /***/ },
-/* 13 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* -*- Mode: js; js-indent-level: 2; -*- */
@@ -3097,7 +3072,7 @@
 	}
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, module) {
 	
-	  var base64 = __webpack_require__(14);
+	  var base64 = __webpack_require__(13);
 	
 	  // A single base 64 digit can contain 6 bits of data. For the base 64 variable
 	  // length quantities we use in the source map spec, the first bit is the sign,
@@ -3203,7 +3178,7 @@
 
 
 /***/ },
-/* 14 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* -*- Mode: js; js-indent-level: 2; -*- */
@@ -3251,7 +3226,7 @@
 
 
 /***/ },
-/* 15 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* -*- Mode: js; js-indent-level: 2; -*- */
@@ -3462,7 +3437,7 @@
 
 
 /***/ },
-/* 16 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* -*- Mode: js; js-indent-level: 2; -*- */
@@ -3476,7 +3451,7 @@
 	}
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, module) {
 	
-	  var util = __webpack_require__(15);
+	  var util = __webpack_require__(14);
 	
 	  /**
 	   * A data structure which is a combination of an array and a set. Adding a new
@@ -3565,7 +3540,7 @@
 
 
 /***/ },
-/* 17 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* -*- Mode: js; js-indent-level: 2; -*- */
@@ -3579,10 +3554,10 @@
 	}
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, module) {
 	
-	  var util = __webpack_require__(15);
-	  var binarySearch = __webpack_require__(18);
-	  var ArraySet = __webpack_require__(16).ArraySet;
-	  var base64VLQ = __webpack_require__(13);
+	  var util = __webpack_require__(14);
+	  var binarySearch = __webpack_require__(17);
+	  var ArraySet = __webpack_require__(15).ArraySet;
+	  var base64VLQ = __webpack_require__(12);
 	
 	  /**
 	   * A SourceMapConsumer instance represents a parsed source map which we can
@@ -4049,7 +4024,7 @@
 
 
 /***/ },
-/* 18 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* -*- Mode: js; js-indent-level: 2; -*- */
@@ -4136,7 +4111,7 @@
 
 
 /***/ },
-/* 19 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* -*- Mode: js; js-indent-level: 2; -*- */
@@ -4150,8 +4125,8 @@
 	}
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, module) {
 	
-	  var SourceMapGenerator = __webpack_require__(12).SourceMapGenerator;
-	  var util = __webpack_require__(15);
+	  var SourceMapGenerator = __webpack_require__(11).SourceMapGenerator;
+	  var util = __webpack_require__(14);
 	
 	  /**
 	   * SourceNodes provide a way to abstract over interpolating/concatenating
@@ -4513,7 +4488,7 @@
 
 
 /***/ },
-/* 20 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {// Copyright Joyent, Inc. and other Node contributors.
@@ -4741,13 +4716,62 @@
 	    }
 	;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ },
-/* 21 */
+/* 20 */
 /***/ function(module, exports) {
 
 
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _chai = __webpack_require__(22);
+	
+	var _SkipList = __webpack_require__(1);
+	
+	var _SkipList2 = _interopRequireDefault(_SkipList);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var skippy = new _SkipList2.default();
+	
+	skippy.set(4, 'hello');
+	skippy.set(1, 'oh');
+	skippy.set(19, 'world');
+	skippy.set(2, 'hi');
+	skippy.set(2, 'lala');
+	skippy.unset(2);
+	skippy.set(2, 'hi');
+	
+	(0, _chai.expect)(skippy.get(4).value).to.equal('hello');
+	(0, _chai.expect)(skippy.has(19)).to.equal(true);
+	(0, _chai.expect)(skippy.has(5)).to.equal(false);
+	
+	skippy.set(5, 'boo');
+	(0, _chai.expect)(skippy.has(5)).to.equal(true);
+	
+	skippy.unset(5);
+	(0, _chai.expect)(skippy.has(5)).to.equal(false);
+	
+	skippy.set(0, 'bar');
+	(0, _chai.expect)(skippy.get(0).value).to.equal('bar');
+	
+	skippy.unset(0);
+	(0, _chai.expect)(skippy.get(0)).to.equal(void 0);
+	
+	(0, _chai.expect)(skippy.before(2)).to.equal('oh');
+	(0, _chai.expect)(skippy.before(19)).to.equal('hello');
+	(0, _chai.expect)(skippy.before(1)).to.equal(void 0);
+	(0, _chai.expect)(skippy.before(0)).to.equal(void 0);
+	
+	console.log(skippy.map(function (val, key) {
+	  return val;
+	}));
 
 /***/ },
 /* 22 */
@@ -6084,7 +6108,7 @@
 	 */
 	
 	var Buffer;
-	try { Buffer = __webpack_require__(7).Buffer; }
+	try { Buffer = __webpack_require__(6).Buffer; }
 	catch(ex) {
 	  Buffer = {};
 	  Buffer.isBuffer = function() { return false; }
