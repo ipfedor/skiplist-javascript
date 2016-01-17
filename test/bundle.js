@@ -133,8 +133,10 @@
 	                update[level] = node;
 	            }
 	            node = node.next[0];
+	            var entry = undefined;
 	            if (node.key === key) {
 	                node.value = value;
+	                entry = node;
 	            } else {
 	                var level = randomLevel(this.p, this.levels);
 	                if (level === this.levels) {
@@ -144,12 +146,13 @@
 	                    }
 	                    update.push(this.head);
 	                }
-	                var entry = new _SkipListNode2.default(key, value, level);
+	                entry = new _SkipListNode2.default(key, value, level);
 	                for (var i = 0; i <= level; i++) {
 	                    entry.next[i] = update[i].next[i];
 	                    update[i].next[i] = entry;
 	                }
 	            }
+	            return entry;
 	        }
 	    }, {
 	        key: 'unset',
@@ -188,26 +191,22 @@
 	    }, {
 	        key: 'forEach',
 	        value: function forEach(fn) {
-	            var node = this.head.next[0];
-	            while (node != Nil) {
-	                fn(node);
-	                node = node.next[0];
-	            }
+	            _forEach(this, fn);
 	        }
 	    }, {
 	        key: 'map',
 	        value: function map(fn) {
 	            var res = [];
-	            this.forEach(function (value, key) {
-	                res.push(fn(value, key));
+	            _forEach(this, function (node) {
+	                return res.push(fn(node));
 	            });
 	            return res;
 	        }
 	    }, {
 	        key: 'reduce',
-	        value: function reduce(memo, fn) {
-	            this.forEach(function (value, key) {
-	                memo = fn(memo, value, key);
+	        value: function reduce(fn, memo) {
+	            _forEach(this, function (node) {
+	                return memo = fn(node);
 	            });
 	            return memo;
 	        }
@@ -224,6 +223,14 @@
 	        level++;
 	    }
 	    return level;
+	}
+	
+	function _forEach(list, fn) {
+	    var node = list.head.next[0];
+	    while (node != list.tail) {
+	        fn(node);
+	        node = node.next[0];
+	    }
 	}
 
 /***/ },
@@ -4738,7 +4745,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var skippy = new _SkipList2.default();
+	var skippy = new _SkipList2.default({});
 	
 	skippy.set(4, 'hello');
 	skippy.set(1, 'oh');
@@ -4764,13 +4771,13 @@
 	skippy.unset(0);
 	(0, _chai.expect)(skippy.get(0)).to.equal(void 0);
 	
-	(0, _chai.expect)(skippy.before(2)).to.equal('oh');
-	(0, _chai.expect)(skippy.before(19)).to.equal('hello');
-	(0, _chai.expect)(skippy.before(1)).to.equal(void 0);
-	(0, _chai.expect)(skippy.before(0)).to.equal(void 0);
+	(0, _chai.expect)(skippy.before(2).value).to.equal('oh');
+	(0, _chai.expect)(skippy.before(19).value).to.equal('hello');
+	(0, _chai.expect)(skippy.before(1).value).to.equal(null);
+	(0, _chai.expect)(skippy.before(0).value).to.equal(null);
 	
-	console.log(skippy.map(function (val, key) {
-	  return val;
+	console.log(skippy.map(function (node) {
+	  return node.value;
 	}));
 
 /***/ },

@@ -48,8 +48,10 @@ export default class SkipList {
             update[level] = node;
         }
         node = node.next[0];
+        let entry;
         if (node.key === key) {
             node.value = value;
+            entry = node;
         } else {
             let level = randomLevel(this.p, this.levels);
             if (level === this.levels) {
@@ -59,12 +61,13 @@ export default class SkipList {
                 }
                 update.push(this.head);
             }
-            const entry = new SkipListNode(key, value, level);
+            entry = new SkipListNode(key, value, level);
             for (let i = 0; i <= level; i++) {
                 entry.next[i] = update[i].next[i];
                 update[i].next[i] = entry;
             }
         }
+        return entry;
     }
 
     unset(key) {
@@ -100,25 +103,17 @@ export default class SkipList {
     }
 
     forEach(fn) {
-        let node = this.head.next[0];
-        while (node != Nil) {
-            fn(node);
-            node = node.next[0];
-        }
+        forEach(this, fn);
     }
 
     map(fn) {
         let res = [];
-        this.forEach((value, key) => {
-            res.push(fn(value, key));
-        });
+        forEach(this, node => res.push(fn(node)));
         return res;
     }
 
-    reduce(memo, fn) {
-        this.forEach((value, key) => {
-            memo = fn(memo, value, key);
-        });
+    reduce(fn, memo) {
+        forEach(this, node => memo = fn(node));
         return memo;
     }
 }
@@ -129,4 +124,12 @@ function randomLevel(p, maxLevel) {
         level++;
     }
     return level;
+}
+
+function forEach(list, fn) {
+    let node = list.head.next[0];
+    while (node != list.tail) {
+        fn(node);
+        node = node.next[0];
+    }
 }

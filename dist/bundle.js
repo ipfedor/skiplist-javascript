@@ -142,8 +142,10 @@
 	                update[level] = node;
 	            }
 	            node = node.next[0];
+	            var entry = undefined;
 	            if (node.key === key) {
 	                node.value = value;
+	                entry = node;
 	            } else {
 	                var level = randomLevel(this.p, this.levels);
 	                if (level === this.levels) {
@@ -153,12 +155,13 @@
 	                    }
 	                    update.push(this.head);
 	                }
-	                var entry = new _SkipListNode2.default(key, value, level);
+	                entry = new _SkipListNode2.default(key, value, level);
 	                for (var i = 0; i <= level; i++) {
 	                    entry.next[i] = update[i].next[i];
 	                    update[i].next[i] = entry;
 	                }
 	            }
+	            return entry;
 	        }
 	    }, {
 	        key: 'unset',
@@ -197,26 +200,22 @@
 	    }, {
 	        key: 'forEach',
 	        value: function forEach(fn) {
-	            var node = this.head.next[0];
-	            while (node != Nil) {
-	                fn(node);
-	                node = node.next[0];
-	            }
+	            _forEach(this, fn);
 	        }
 	    }, {
 	        key: 'map',
 	        value: function map(fn) {
 	            var res = [];
-	            this.forEach(function (value, key) {
-	                res.push(fn(value, key));
+	            _forEach(this, function (node) {
+	                return res.push(fn(node));
 	            });
 	            return res;
 	        }
 	    }, {
 	        key: 'reduce',
-	        value: function reduce(memo, fn) {
-	            this.forEach(function (value, key) {
-	                memo = fn(memo, value, key);
+	        value: function reduce(fn, memo) {
+	            _forEach(this, function (node) {
+	                return memo = fn(node);
 	            });
 	            return memo;
 	        }
@@ -233,6 +232,14 @@
 	        level++;
 	    }
 	    return level;
+	}
+	
+	function _forEach(list, fn) {
+	    var node = list.head.next[0];
+	    while (node != list.tail) {
+	        fn(node);
+	        node = node.next[0];
+	    }
 	}
 
 /***/ },

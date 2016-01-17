@@ -2,7 +2,7 @@ import { expect } from 'chai';
 
 import SkipList from '../src/SkipList';
 
-const skippy = new SkipList();
+const skippy = new SkipList({});
 
 skippy.set(4, 'hello');
 skippy.set(1, 'oh');
@@ -28,9 +28,9 @@ expect(skippy.get(0).value).to.equal('bar');
 skippy.unset(0);
 expect(skippy.get(0)).to.equal(void 0);
 
-expect(skippy.before(2)).to.equal('oh');
-expect(skippy.before(19)).to.equal('hello');
-expect(skippy.before(1)).to.equal(void 0);
-expect(skippy.before(0)).to.equal(void 0);
+expect(skippy.before(2).value).to.equal('oh');
+expect(skippy.before(19).value).to.equal('hello');
+expect(skippy.before(1).value).to.equal(null);
+expect(skippy.before(0).value).to.equal(null);
 
-console.log(skippy.map((val, key) => val));
+console.log(skippy.map(node => node.value));
