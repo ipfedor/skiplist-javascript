@@ -1,4 +1,14 @@
-/******/ (function(modules) { // webpackBootstrap
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else if(typeof exports === 'object')
+		exports["skiplist"] = factory();
+	else
+		root["skiplist"] = factory();
+})(this, function() {
+return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -49,15 +59,20 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.SkipList = undefined;
+	exports.SkipListNode = exports.SkipList = undefined;
 	
 	var _SkipList2 = __webpack_require__(1);
 	
 	var _SkipList3 = _interopRequireDefault(_SkipList2);
 	
+	var _SkipListNode2 = __webpack_require__(2);
+	
+	var _SkipListNode3 = _interopRequireDefault(_SkipListNode2);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.SkipList = _SkipList3.default;
+	exports.SkipListNode = _SkipListNode3.default;
 
 /***/ },
 /* 1 */
@@ -265,5 +280,7 @@
 	exports.default = SkipListNode;
 
 /***/ }
-/******/ ]);
+/******/ ])
+});
+;
 //# sourceMappingURL=bundle.js.map

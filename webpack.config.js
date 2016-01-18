@@ -10,6 +10,8 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, './'),
         filename: '[name].js',
+        library: 'skiplist',
+        libraryTarget: 'umd',
     },
     module: {
         loaders: [

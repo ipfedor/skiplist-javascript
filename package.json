@@ -1,5 +1,6 @@
 {
-  "name": "skiplist",
+  "name": "@plainview/skiplist",
+  "private": true,
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,7 +10,7 @@
     "test:debug": "npm run build && node_modules/.bin/node-debug --web-host 10.0.1.154 --no-preload test/bundle.js"
   },
   "author": "",
-  "license": "ISC",
+  "license": "UNLICENSED",
   "devDependencies": {
     "babel-cli": "^6.4.0",
     "babel-core": "^6.4.0",
