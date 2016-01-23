@@ -4,7 +4,6 @@ module.exports = {
     devtool: 'sourcemap',
     context: __dirname,
     entry: {
-        'dist/bundle': path.resolve(__dirname, './src/index.js'),
         'test/bundle': path.resolve(__dirname, './test/index.js'),
     },
     output: {
@@ -20,13 +19,6 @@ module.exports = {
                 exclude: /(node_modules)/,
                 loader: 'babel',
                 cacheDirectory: true,
-                query: {
-                    presets: ['node5'],
-                    plugins: [
-                        'transform-class-properties',
-                        'transform-export-extensions'
-                    ],
-                },
             },
         ],
     },

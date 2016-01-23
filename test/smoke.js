@@ -1,5 +1,5 @@
 import test from './thai-chape';
-import SkipList from '../src/SkipList';
+import { SkipList } from '../';
 
 test('.set() & .unset()', expect => {
     const skippy = new SkipList();

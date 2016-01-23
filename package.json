@@ -1,6 +1,10 @@
 {
   "name": "@plainview/skiplist",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.com:plainview/skiplist.git"
+  },
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
