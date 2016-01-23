@@ -1,22 +1,20 @@
 import SkipListNode from './SkipListNode';
 
-const Nil = new SkipListNode(Infinity, null, 0);
-
-Object.defineProperty(Nil, 'next', {
-    configurable: false,
-    enumerable: false,
-    get: () => { throw new RangeError('Exceeded maximum range of skip list'); }
-});
-
 export default class SkipList {
     levels = 1;
-    tail = Nil;
 
-    constructor({ headKey=0, p=0.5, maxLevel=16 }) {
+    constructor(headKey=0, tailKey=Infinity, p=0.5, maxLevel=16) {
         this.p = p;
         this.maxLevel = maxLevel;
         this.head = new SkipListNode(headKey, null, this.maxLevel);
-
+        this.tail = new SkipListNode(tailKey, null, 0);
+        Object.defineProperty(this.tail, 'next', {
+            configurable: false,
+            enumerable: false,
+            get: function get() {
+                throw new RangeError('Exceeded maximum range of skip list');
+            }
+        });
         for (let level = 0; level < this.levels; level++) {
             this.head.next[level] = this.tail;
         }
@@ -80,6 +78,9 @@ export default class SkipList {
             update[level] = node;
         }
         node = node.next[0];
+        if (node === this.tail) {
+            return;
+        }
         for (let level = 0; level < this.levels; level++) {
             if (update[level].next[level] !== node) {
                 break;

@@ -19,8 +19,13 @@ module.exports = {
                 test: /\.jsx?$/,
                 exclude: /(node_modules)/,
                 loader: 'babel',
+                cacheDirectory: true,
                 query: {
-                    presets: ['es2015', 'stage-1'],
+                    presets: ['node5'],
+                    plugins: [
+                        'transform-class-properties',
+                        'transform-export-extensions'
+                    ],
                 },
             },
         ],

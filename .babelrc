@@ -1,4 +1,4 @@
 {
-    "presets": ["es2015", "stage-1"],
-    "plugins": []
+    "presets": ["node5"],
+    "plugins": ["transform-class-properties", "transform-export-extensions"]
 }
