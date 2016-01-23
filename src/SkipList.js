@@ -37,6 +37,9 @@ export default class SkipList {
     }
 
     set(key, value) {
+        if (typeof key !== 'number') {
+            throw new TypeError('Must provide numeric key for SkipListNode');
+        }
         let node = this.head;
         let update = new Array(this.levels);
         for (let level = this.levels - 1; level > -1; level--) {
