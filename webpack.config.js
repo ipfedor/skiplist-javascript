@@ -4,6 +4,7 @@ module.exports = {
     devtool: 'sourcemap',
     context: __dirname,
     entry: {
+        'index': path.resolve(__dirname, './main.js'),
         'test/bundle': path.resolve(__dirname, './test/index.js'),
     },
     output: {

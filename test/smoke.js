@@ -1,7 +1,7 @@
-import test from './thai-chape';
-import { SkipList } from '../';
+import SkipList from '../src/SkipList';
+import { expect } from 'chai';
 
-test('.set() & .unset()', expect => {
+it('.set() & .unset()', () => {
     const skippy = new SkipList();
     skippy.set(4, 'hello');
     skippy.set(1, 'oh');
@@ -15,26 +15,26 @@ test('.set() & .unset()', expect => {
     expect(skippy.has(5)).to.equal(false);
 });
 
-test('.has()', expect => {
+it('.has()', () => {
     const skippy = new SkipList();
     skippy.set(5, 'boo');
     expect(skippy.has(5)).to.equal(true);
 });
 
-test('unset()', expect => {
+it('unset()', () => {
     const skippy = new SkipList();
     skippy.set(5, 'boo');
     skippy.unset(5);
     expect(skippy.has(5)).to.equal(false);
 });
 
-test('calling unset() on empty skiplist should not throw', expect => {
+it('calling unset() on empty skiplist should not throw', () => {
     const skippy = new SkipList();
     skippy.unset(30);
     expect(true).to.equal(true);
 });
 
-test('.get()', expect => {
+it('.get()', () => {
     const skippy = new SkipList();
     skippy.set(0, 'bar');
     expect(skippy.get(0).value).to.equal('bar');
@@ -42,7 +42,7 @@ test('.get()', expect => {
     expect(skippy.get(0)).to.equal(void 0);
 });
 
-test('.before()', expect => {
+it('.before()', () => {
     const skippy = new SkipList();
     skippy.set(4, 'hello');
     skippy.set(1, 'oh');

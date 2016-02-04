@@ -1,4 +1,11 @@
 {
-    "presets": ["node5"],
-    "plugins": ["transform-class-properties", "transform-export-extensions"]
+    "plugins": [
+        "transform-runtime",
+        "transform-es2015-arrow-functions",
+        "transform-es2015-modules-commonjs",
+        "transform-export-extensions",
+        "transform-es2015-classes",
+        "transform-es2015-parameters",
+        "transform-es2015-block-scoping"
+    ]
 }

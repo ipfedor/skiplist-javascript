@@ -1,9 +1,9 @@
 import SkipListNode from './SkipListNode';
 
 export default class SkipList {
-    levels = 1;
 
     constructor(headKey=0, tailKey=Infinity, p=0.5, maxLevel=16) {
+        this.levels = 1;
         this.p = p;
         this.maxLevel = maxLevel;
         this.head = new SkipListNode(headKey, null, this.maxLevel);
