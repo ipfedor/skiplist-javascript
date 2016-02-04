@@ -109,8 +109,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.levels = 1;
 	        this.p = p;
 	        this.maxLevel = maxLevel;
-	        this.head = new _SkipListNode2.default(headKey, null, this.maxLevel);
-	        this.tail = new _SkipListNode2.default(tailKey, null, 0);
+	        this.head = this.createNode(headKey, null, this.maxLevel);
+	        this.tail = this.createNode(tailKey, null, 0);
 	        Object.defineProperty(this.tail, 'next', {
 	            configurable: false,
 	            enumerable: false,
@@ -124,6 +124,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	
 	    (0, _createClass3.default)(SkipList, [{
+	        key: 'createNode',
+	        value: function createNode(key, value, level) {
+	            return new _SkipListNode2.default(key, value, level);
+	        }
+	    }, {
 	        key: 'get',
 	        value: function get(key) {
 	            var node = this.head;
@@ -145,7 +150,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        key: 'set',
 	        value: function set(key, value) {
 	            if (typeof key !== 'number') {
-	                throw new TypeError('Must provide numeric key for SkipListNode');
+	                throw new TypeError('SkipList requires numeric key but received: ' + String(key));
 	            }
 	            var node = this.head;
 	            var update = new Array(this.levels);
@@ -169,7 +174,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    }
 	                    update.push(this.head);
 	                }
-	                entry = new _SkipListNode2.default(key, value, level);
+	                entry = this.createNode(key, value, level);
 	                for (var i = 0; i <= level; i++) {
 	                    entry.next[i] = update[i].next[i];
 	                    update[i].next[i] = entry;
@@ -217,13 +222,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, {
 	        key: 'forEach',
 	        value: function forEach(fn) {
-	            _forEach(this, fn);
+	            var node = this.head.next[0];
+	            while (node !== this.tail) {
+	                fn(node);
+	                node = node.next[0];
+	            }
 	        }
 	    }, {
 	        key: 'map',
 	        value: function map(fn) {
 	            var res = [];
-	            _forEach(this, function (node) {
+	            forEach(this, function (node) {
 	                return res.push(fn(node));
 	            });
 	            return res;
@@ -231,7 +240,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, {
 	        key: 'reduce',
 	        value: function reduce(fn, memo) {
-	            _forEach(this, function (node) {
+	            forEach(this, function (node) {
 	                return memo = fn(node);
 	            });
 	            return memo;
@@ -248,14 +257,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        level++;
 	    }
 	    return level;
-	}
-	
-	function _forEach(list, fn) {
-	    var node = list.head.next[0];
-	    while (node != list.tail) {
-	        fn(node);
-	        node = node.next[0];
-	    }
 	}
 
 /***/ },

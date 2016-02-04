@@ -6,8 +6,8 @@ export default class SkipList {
         this.levels = 1;
         this.p = p;
         this.maxLevel = maxLevel;
-        this.head = new SkipListNode(headKey, null, this.maxLevel);
-        this.tail = new SkipListNode(tailKey, null, 0);
+        this.head = this.createNode(headKey, null, this.maxLevel);
+        this.tail = this.createNode(tailKey, null, 0);
         Object.defineProperty(this.tail, 'next', {
             configurable: false,
             enumerable: false,
@@ -18,6 +18,10 @@ export default class SkipList {
         for (let level = 0; level < this.levels; level++) {
             this.head.next[level] = this.tail;
         }
+    }
+
+    createNode(key, value, level) {
+        return new SkipListNode(key, value, level);
     }
 
     get(key) {
@@ -38,7 +42,7 @@ export default class SkipList {
 
     set(key, value) {
         if (typeof key !== 'number') {
-            throw new TypeError('Must provide numeric key for SkipListNode');
+            throw new TypeError('SkipList requires numeric key but received: ' + String(key));
         }
         let node = this.head;
         let update = new Array(this.levels);
@@ -62,7 +66,7 @@ export default class SkipList {
                 }
                 update.push(this.head);
             }
-            entry = new SkipListNode(key, value, level);
+            entry = this.createNode(key, value, level);
             for (let i = 0; i <= level; i++) {
                 entry.next[i] = update[i].next[i];
                 update[i].next[i] = entry;
@@ -107,7 +111,11 @@ export default class SkipList {
     }
 
     forEach(fn) {
-        forEach(this, fn);
+        let node = this.head.next[0];
+        while (node !== this.tail) {
+            fn(node);
+            node = node.next[0];
+        }
     }
 
     map(fn) {
@@ -128,12 +136,4 @@ function randomLevel(p, maxLevel) {
         level++;
     }
     return level;
-}
-
-function forEach(list, fn) {
-    let node = list.head.next[0];
-    while (node != list.tail) {
-        fn(node);
-        node = node.next[0];
-    }
 }
