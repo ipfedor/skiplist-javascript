@@ -120,12 +120,12 @@ export default class SkipList {
 
     map(fn) {
         let res = [];
-        forEach(this, node => res.push(fn(node)));
+        this.forEach(this, node => res.push(fn(node)));
         return res;
     }
 
     reduce(fn, memo) {
-        forEach(this, node => memo = fn(node));
+        this.forEach(this, node => memo = fn(node));
         return memo;
     }
 }
