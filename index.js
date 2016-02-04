@@ -232,7 +232,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        key: 'map',
 	        value: function map(fn) {
 	            var res = [];
-	            this.forEach(this, function (node) {
+	            this.forEach(function (node) {
 	                return res.push(fn(node));
 	            });
 	            return res;
@@ -240,7 +240,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, {
 	        key: 'reduce',
 	        value: function reduce(fn, memo) {
-	            this.forEach(this, function (node) {
+	            this.forEach(function (node) {
 	                return memo = fn(node);
 	            });
 	            return memo;
