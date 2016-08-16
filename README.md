@@ -11,10 +11,17 @@ This implementation also provides convenience iterators such as `forEach`,
 values.
 
 `set(key, value)` - Store a value in the list.  Key must be numeric.
+
 `unset(key)` - Remove a value from the list.
+
 `has(key)` - Return true if the list contains a value for the provided numeric key.
+
 `get(key)` - Return the node associated with the provided key or undefined.
+
 `before(key)` - Return the node directly before the one with the provided key.
+
 `forEach(fn)` - Iterate the list.  `fn` is passed each node in sequence.
+
 `map(fn)` - Construct an array of results from each element in the list.
+
 `reduce(fn, memo)` - Build up the starting `memo` arg from each element.
