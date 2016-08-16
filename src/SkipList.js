@@ -125,7 +125,7 @@ export default class SkipList {
     }
 
     reduce(fn, memo) {
-        this.forEach(node => memo = fn(node));
+        this.forEach(node => memo = fn(memo, node));
         return memo;
     }
 }
